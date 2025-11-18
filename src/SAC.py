@@ -17,7 +17,6 @@ from networks import PolicyNetwork, SoftQNetwork, ValueNetwork
 import os
 from datetime import datetime
 import matplotlib.pyplot as plt
-from Sequential_CBF_new import *
 
 
 

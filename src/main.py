@@ -5,7 +5,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 from simulator import Continuous2DEnv
-from task_schedule_py3 import task_scheduler
 from datetime import datetime
 
 import sys
