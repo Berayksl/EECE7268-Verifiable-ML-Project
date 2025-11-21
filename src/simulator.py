@@ -226,15 +226,15 @@ class Continuous2DEnv:
         rho_max = self.goals[0]['radius']
 
         gamma_0 = abs(self.goals[0]['radius'] - dist)
-        gamma_inf = 0.1 * min(gamma_0, rho_max) #might need to change later!!!
+        gamma_inf = 0.99 * min(gamma_0, rho_max) #might need to change later!!!
 
-        t_star = 35 #assuming F[0, 35]
+        t_star = 34 #assuming F[0, 35]
 
         l = 1/t_star * np.log((gamma_0 - gamma_inf) / (rho_max - gamma_inf))
 
         gamma = (gamma_0 - gamma_inf) * np.exp(-l * (current_time+1)) + gamma_inf
 
-        reward = rho/50 + gamma - rho_max
+        reward = rho + gamma - rho_max
 
         return reward
     

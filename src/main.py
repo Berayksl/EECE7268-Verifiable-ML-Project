@@ -83,11 +83,7 @@ def train(env,hyperparameters, num_runs, actor_model, critic_model):
 	"""	
 	now = datetime.now()
 	formatted_time = now.strftime("%Y-%m-%d %H:%M:%S")
-	if hyperparameters['CBF']:
-		folder_name = 'CBF_' + formatted_time
-	else:
-		folder_name = 'noCBF_' + formatted_time
-
+	folder_name = formatted_time
 
 	print(f"Training started...", flush=True)
 
