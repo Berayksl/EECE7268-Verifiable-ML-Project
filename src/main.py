@@ -183,20 +183,18 @@ def plot_final_results(rewards, folder_name):
 
 
 if __name__ == "__main__":
-	agent_init_loc = [-5.0, -5.0] #initial location of the agent
+	agent_init_loc = [-7.0, 4.0] #initial location of the agent
 	#Static goal region:
-	goal_region_radius = 2
+	goal_region_radius = 1
 	goals = {
-	0: {'center': (6, 5), 'radius': goal_region_radius, 'movement':{'type':'static'}}, #goal region for the agent
+	0: {'center': (3, -7), 'radius': goal_region_radius, 'movement':{'type':'static'}}, #goal region for the agent
 	}
 
 	obstacles = {
-	0: {'label': 1,'center': (3, -3), 'radius': 1.5, 'u_max': 1, 'remaining_time': 100, 'movement':{'type': 'static'}, 'color': 'blue'},
-	1: {'label': 1,'center': (-3, 3), 'radius': 1.5, 'u_max': 1, 'remaining_time': 100, 'movement':{'type': 'static'}, 'color': 'blue'}
+	0: {'label': 1,'center': (-3, -1.6), 'radius': 3, 'u_max': 0, 'remaining_time': 100, 'movement':{'type': 'static'}, 'color': 'blue'},
+	1: {'label': 1,'center': (2, 3), 'radius': 2, 'u_max': 0, 'remaining_time': 100, 'movement':{'type': 'static'}, 'color': 'blue'}
 	}
 
-
-	u_agent_max = 0.5 # Max vel. of the system
 	disturbance_interval = [0, 0]
 
 
@@ -218,7 +216,7 @@ if __name__ == "__main__":
 		"disturbance": disturbance_interval #disturbance range in both x and y directions [w_min, w_max]
     }
 
-	action_range = [0.5, 0.5] #action range for the RL model (for the neural network output layer) [3,3] for case-1, [4,4] for case-2
+	action_range = [0.6, 0.6] #action range for the RL model (for the neural network output layer) [3,3] for case-1, [4,4] for case-2
 
 	#learning hyperparameters:
 	hyperparameters = {
@@ -227,8 +225,8 @@ if __name__ == "__main__":
 				'hidden_size': 64, 
 				'buffer_size': int(1e6),
 				'batch_size': 128,
-				'max_timesteps_per_episode': 35, 
-				'num_episodes': 100,
+				'max_timesteps_per_episode': 40, 
+				'num_episodes': 200,
 				'n_updates_per_iteration': 1,
 				'deterministic': False,
 				'auto_entropy':True,
@@ -253,7 +251,7 @@ if __name__ == "__main__":
 	elif args.mode == 'test':
 		config['render'] = True #enable rendering for testing
 		config['dt_render'] = 0.03
-		config['init_loc'] = [-5.0, -5.0]
+		config['init_loc'] = agent_init_loc
 		config['randomize_loc'] = False #randomize the agent location at the end of each episode
 		env = Continuous2DEnv(config)
 		max_timesteps_per_episode = hyperparameters['max_timesteps_per_episode']

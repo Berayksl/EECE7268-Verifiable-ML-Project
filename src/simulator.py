@@ -225,16 +225,29 @@ class Continuous2DEnv:
         rho = self.goals[0]['radius'] - dist  # Dense part: encourages reaching nearest goal
         rho_max = self.goals[0]['radius']
 
-        gamma_0 = abs(self.goals[0]['radius'] - dist)
+        initial_dist = np.linalg.norm(self.init_loc[0:2] - np.array(self.goals[0]['center']))
+        gamma_0 = abs(self.goals[0]['radius'] - initial_dist)
         gamma_inf = 0.99 * min(gamma_0, rho_max) #might need to change later!!!
 
-        t_star = 34 #assuming F[0, 35]
+        t_star = 39 #assuming F[0, 40]
 
         l = 1/t_star * np.log((gamma_0 - gamma_inf) / (rho_max - gamma_inf))
 
         gamma = (gamma_0 - gamma_inf) * np.exp(-l * (current_time+1)) + gamma_inf
+        
+        penalty = 0
+        #penalty for hitting obstacles
+        for obstacle in self.obstacles.values():
+            dist_to_obstacle = np.linalg.norm(pos - np.array(obstacle['center']))
+            if dist_to_obstacle <= obstacle['radius']:
+                penalty = -100  # Large penalty for hitting an obstacle
 
-        reward = rho + gamma - rho_max
+        beta = 0.15 #weight for obstacle penalty
+
+        reward = rho + gamma - rho_max + beta * penalty
+
+        if rho >= 0:
+            reward += 10  # Reward for reaching the goal
 
         return reward
     

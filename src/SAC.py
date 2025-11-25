@@ -129,6 +129,7 @@ class SAC:
 
 
     def update(self, batch_size, auto_entropy=True, target_entropy=-2, gamma=0.99,soft_tau=1e-2):
+        target_entropy = -float(self.act_dim) 
         state, action, reward, next_state, done = self.replay_buffer.sample(batch_size)
         # print('sample:', state, action,  reward, done)
 
@@ -147,7 +148,6 @@ class SAC:
         # alpha = 0.0  # trade-off between exploration (max entropy) and exploitation (max Q) 
         if auto_entropy is True:
             alpha_loss = -(self.log_alpha * (log_prob + target_entropy).detach()).mean()
-            # print('alpha loss: ',alpha_loss)
             self.alpha_optim.zero_grad()
             alpha_loss.backward()
             self.alpha_optim.step()
